@@ -7,6 +7,7 @@ import { getFunctions, httpsCallable } from "firebase/functions";
 import { firebaseApp } from "../lib/firebase";
 import { EffectComposer, Bloom, Vignette, Noise } from "@react-three/postprocessing";
 
+
 type Phase =
   | "intro"
   | "idle"

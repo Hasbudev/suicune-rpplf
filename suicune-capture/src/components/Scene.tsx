@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { scale } from "framer-motion";
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 type Phase = "intro" | "idle" | "throwing" | "shaking" | "captured" | "fled";
 
 // =================== TWEAK THESE ===================
@@ -80,7 +81,6 @@ export function Scene({
         {/* Town */}
         <TownEnvironment />
         <WallLogoDebug />
-        <WallLogo />
 
         {/* Encounter VFX */}
         <Portal phase={phase} onIntroDone={onIntroDone} debugCam={debugCam} pos={ENCOUNTER_POS} />
@@ -153,32 +153,8 @@ function TownEnvironment() {
   return <primitive object={scene} position={[0, -0.25, 0]} rotation={[0, Math.PI, 0]} scale={1} />;
 }
 
-function WallLogo() {
-  const tex = useTexture("/textures/logo.png");
-
-  // optional: make it look sharper
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 8;
-
-  return (
-    <mesh
-      // 🔧 YOU WILL TWEAK THESE 3 VALUES
-      position={[0, 2, 6]}   // x,y,z (place on the wall)
-      rotation={[0, Math.PI, 0]}  // rotate to face the camera / match wall
-    >
-      <planeGeometry args={[2.2, 2.2]} /> {/* width, height */}
-      <meshBasicMaterial
-        map={tex}
-        transparent
-        alphaTest={0.05}  // removes dark fringe
-        toneMapped={false}
-      />
-    </mesh>
-  );
-}
-
 function WallLogoDebug() {
-  const tex = useTexture("/textures/logo.png");
+  const tex = useTexture(asset("/textures/logo.png"));
   const { camera } = useThree();
 
   // Make it look correct
