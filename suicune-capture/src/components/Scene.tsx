@@ -17,6 +17,13 @@ const CAM_IDLE_OFFSET = new THREE.Vector3(-3.2, 3.8, 7.0);
 const POKEBALL_SCALE = 0.1; // smaller
 // ===================================================
 
+const basePath =
+  typeof window !== "undefined"
+    ? (process.env.NEXT_PUBLIC_BASE_PATH ?? "")
+    : "";
+
+const asset = (p: string) => `${basePath}${p}`;
+
 export function Scene({
   phase,
   onIntroDone,
@@ -116,7 +123,7 @@ export function Scene({
 /* ----------------------------- Town ----------------------------- */
 
 function TownEnvironment() {
-  const { scene } = useGLTF("/models/town.glb");
+  const { scene } = useGLTF(asset("/models/town.glb"))
   const gl = useThree((s) => s.gl);
 
   useEffect(() => {
@@ -286,7 +293,7 @@ function Portal({
 
 function SuicuneModel({ phase, pos }: { phase: Phase; pos: THREE.Vector3 }) {
   const group = useRef<THREE.Group>(null!);
-  const { scene } = useGLTF("/models/suicune.glb");
+  const { scene } = useGLTF(asset("/models/suicune.glb"));
 
   const t = useRef(0);
   const [smokeOn, setSmokeOn] = useState(false);
@@ -450,7 +457,7 @@ function PokeballModel({
   scale: number;
 }) {
   const group = useRef<THREE.Group>(null!);
-  const { scene } = useGLTF("/models/pokeball.glb");
+  const { scene } = useGLTF(asset("/models/pokeball.glb"))
   const { camera } = useThree();
 
   const t = useRef(0);
@@ -575,6 +582,6 @@ function PokeballModel({
 
 /* ----------------------------- Preload ----------------------------- */
 
-useGLTF.preload("/models/town.glb");
-useGLTF.preload("/models/suicune.glb");
-useGLTF.preload("/models/pokeball.glb");
+useGLTF.preload(asset("/models/town.glb"));
+useGLTF.preload(asset("/models/suicune.glb"));
+useGLTF.preload(asset("/models/pokeball.glb"));
